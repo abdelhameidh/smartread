@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- Speech bubble -->
+  <circle cx="150" cy="50" r="30" fill="#4A90E2" />
+  <polygon points="150,80 160,70 170,80" fill="#4A90E2" />
+  
+  <!-- Chatbot icon (smiling face) -->
+  <circle cx="150" cy="50" r="15" fill="#fff"/>
+  <circle cx="145" cy="45" r="2" fill="#4A90E2"/>
+  <circle cx="155" cy="45" r="2" fill="#4A90E2"/>
+  <path d="M145 55 Q150 60, 155 55" stroke="#4A90E2" stroke-width="2" fill="transparent"/>
+
+  <!-- PDF icon -->
+  <rect x="40" y="40" width="50" height="70" fill="#E94E77" rx="5"/>
+  <text x="50" y="85" font-size="16" fill="white" font-family="Arial">PDF</text>
+  <rect x="45" y="110" width="40" height="10" fill="#E94E77" rx="2"/>
+  <polygon points="90,40 95,45 90,50" fill="#E94E77"/>
+</svg>
