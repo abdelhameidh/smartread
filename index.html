@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="public\logo2.svg" type="image/x-icon">
+    <title>SmartRead</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #343541;
+            color: #d1d5db;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #pdf-upload {
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #prompt-container {
+            display: flex;
+            align-items: center;
+            background-color: #40414f;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 0 10px;
+            position: relative;
+        }
+        #prompt-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            background-color: transparent;
+            color: #d1d5db;
+            font-size: 16px;
+            outline: none;
+        }
+        .action-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            margin: 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .action-button:hover {
+            background-color: #4a4b57;
+        }
+        .action-button img {
+            height: 24px;
+            width: 24px;
+        }
+        #send-button {
+            background-color: #2d10a3;
+        }
+        #send-button:hover {
+            background-color: #180565;
+        }
+        #response-area {
+            margin-top: 20px;
+            min-height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: left;
+        }
+        #upload-dropdown {
+            position: absolute;
+            background-color: #40414f;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 5px;
+            width: 150px;
+        }
+        #upload-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #2d10a3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        #upload-dropdown button:hover {
+            background-color: #180565;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="public\logo.svg" alt="SmartRead Logo" style="margin-left: -370px;">
+            <h1>Welcome to SmartRead.</h1>
+            <p style="color: #fff; text-align: center; margin-top: 30px;">Scroll down to learn more about the project and watch the demo video showcasing its features.</p>
+        </div>
+        
+        <input type="file" id="pdf-upload" accept=".pdf" style="display:none;">
+        
+        <div id="response-area">
+            Your chat responses will appear here...
+        </div>
+        
+        <div id="prompt-container">
+            <input type="text" id="prompt-input" placeholder="Type your prompt here...">
+            <button id="mic-button" class="action-button" title="Record Audio">
+                <img src="public/recording.svg" alt="Microphone">
+            </button>
+            <button id="upload-button" class="action-button" title="Upload PDF">
+                <img src="public/paper-clip.svg" alt="Upload">
+            </button>
+            <div id="upload-dropdown">
+                <button id="select-pdf-btn">Select PDF</button>
+                <button id="drag-drop-btn">Drag and Drop</button>
+            </div>
+            <button id="send-button" class="action-button" title="Send Message">
+                <img src="public/send.svg" alt="Send">
+            </button>
+        </div>
+    </div>
+    <div class="project-description" style="width: 100%; max-width: 1300px; margin: 20px auto; padding: 20px; border: 3px solid #2d10a3; background-color: #40414f; border-radius: 10px;">
+        <h1 style="color: #fff; text-align: center; margin-bottom: 20px;">Project Description</h1>
+        <p style="color: #d1d5db; margin-bottom: 20px;">
+            <div style="border: 3px solid #eb0e0e; border-radius: 10px;">
+            <ul style=" padding-left: 30px; color: #d1d5db;">
+                <li style="margin-bottom: 20px;"><b>Key Components</b>:
+                    <ul style="padding-left: 30px; color: #d1d5db;">
+                <li style="margin-top: 10px;margin-bottom: 10px;">An AI chatbot designed to interact with PDF documents, answering user queries based on the content within the documents using Retrieval-Augmented Generation (RAG) and LangChain.</li>
+                <li style="margin-bottom: 10px;"><b>PDF Parsing</b>: Extracts text from PDF files using libraries like PyMuPDF or pdfplumber.</li>
+                <li style="margin-bottom: 10px;"><b>Text Embedding</b>: Converts the extracted text into embeddings using <b>SentenceTransformers</b></li>
+                <li style="margin-bottom: 10px;"><b>Vector Database</b>: Stores the embeddings in a vector database for efficient similarity search. Utilizes <b>LangChain</b> to implement a retrieval system that fetches relevant text chunks from the document  based on the user's query.</li>
+                    </ul>
+                </li>
+                <li><b>Technologies</b>:
+                    <ul style="padding-left: 30px; color: #d1d5db;">
+                <li style="margin-top: 10px; margin-bottom: 10px;"><b>LangChain:</b> For chaining together the language models, retrieval mechanisms, and output generation.</li>
+                <li style="margin-bottom: 10px;"><b>SentenceTransformers:</b>:For generating high-quality text embeddings to represent the PDF content.</li>
+                <li style="margin-bottom: 10px;"><b>FastAPi</b>: for creating the endpoints</li>
+                <li style="margin-bottom: 10px;"><b>Gemma </b>: an open source LLM from goolge.</li>
+                <li style="margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 20px;">
+                    <img src="public/fastapi.svg" alt="FastAPI Logo" style="height: 50px; width: auto;">
+                    <img src="public/langchain.svg" alt="LangChain Logo" style="height: 50px; width: auto;">
+                    <img src="public/python-icon.svg" alt="python Logo" style="height: 50px; width: auto;">
+                    <img src="public/pytorch.svg" alt="pytorch Logo" style="height: 50px; width: auto;">
+                </li>
+                <li><b>Features</b>:
+                    <ul style="padding-left: 30px; color: #d1d5db;">
+                <li style="margin-top: 10px; margin-bottom: 10px;"><b>Contextual Answers: The chatbot provides accurate, context-aware answers<br/> based on the specific content of the uploaded PDF.</li>
+                <li style="margin-bottom: 10px;"><b>Flexible Querying:</b>:Users can ask a variety of questions, such as "What is the summary of the introduction?" or "Can you explain the section on machine learning?"</li>
+                <li style="margin-bottom: 10px;"><b>Document Understanding:</b>: The chatbot understands complex structures and topics within the document.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        </p>
+        <h3 style="color: #fff; text-align: center; margin-top: 30px;">You can watch the demo here</h3>
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <video controls style="max-width: 100%; border: 3px solid #2d10a3; border-radius: 10px;">
+                <source src="public\Demo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        const uploadButton = document.getElementById('upload-button');
+        const uploadDropdown = document.getElementById('upload-dropdown');
+        const selectPdfBtn = document.getElementById('select-pdf-btn');
+        const dragDropBtn = document.getElementById('drag-drop-btn');
+        const pdfUpload = document.getElementById('pdf-upload');
+        const promptInput = document.getElementById('prompt-input');
+        const micButton = document.getElementById('mic-button');
+        const sendButton = document.getElementById('send-button');
+        const responseArea = document.getElementById('response-area');
+
+        uploadButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            uploadDropdown.style.display = uploadDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!uploadButton.contains(e.target) && !uploadDropdown.contains(e.target)) {
+                uploadDropdown.style.display = 'none';
+            }
+        });
+
+        selectPdfBtn.addEventListener('click', () => {
+            pdfUpload.click();
+            uploadDropdown.style.display = 'none';
+        });
+
+        pdfUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                const formData = new FormData();
+                formData.append('pdf', file);
+
+                fetch('https://8c2c-34-106-87-139.ngrok-free.app/uploadpdf', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    responseArea.textContent = `PDF Uploaded: ${file.name}`;
+                })
+                .catch(error => {
+                    responseArea.textContent = `Upload Error: ${error.message}`;
+                });
+            } else {
+                responseArea.textContent = 'Please select a valid PDF file.';
+            }
+        });
+
+        dragDropBtn.addEventListener('click', () => {
+            const dropZone = document.createElement('div');
+            dropZone.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.7);
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 24px;
+            `;
+            dropZone.innerHTML = `
+                <div style="text-align: center;">
+                    <p>Drag and Drop PDF Here</p>
+                    <small>Or click to select file</small>
+                </div>
+            `;
+
+            dropZone.addEventListener('click', () => {
+                pdfUpload.click();
+            });
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.style.backgroundColor = 'rgba(45,16,163,0.7)';
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.style.backgroundColor = 'rgba(0,0,0,0.7)';
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type === 'application/pdf') {
+                    pdfUpload.files = files;
+                    const event = new Event('change');
+                    pdfUpload.dispatchEvent(event);
+                } else {
+                    responseArea.textContent = 'Please drop a valid PDF file.';
+                }
+                document.body.removeChild(dropZone);
+            });
+
+            document.body.appendChild(dropZone);
+            uploadDropdown.style.display = 'none';
+        });
+
+        sendButton.addEventListener('click', async () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt) return;
+
+            try {
+                const response = await fetch('https://00d5-34-145-59-18.ngrok-free.app/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                responseArea.innerHTML = '';
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const data = line.slice(6);
+                            if (data === '[DONE]') {
+                                console.log('Stream complete');
+                                continue;
+                            }
+                            try {
+                                const jsonData = JSON.parse(data);
+                                responseArea.innerHTML += jsonData.word;
+                            } catch (e) {
+                                console.error('Error parsing JSON:', e);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                responseArea.innerHTML += '<br>Error: ' + error.message;
+            }
+        });
+
+        let mediaRecorder;
+        let audioStream;
+        let isRecording = false;
+
+        micButton.addEventListener('click', async () => {
+            if (!isRecording) {
+                try {
+                    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const audioChunks = [];
+                    
+                    mediaRecorder = new MediaRecorder(audioStream, {
+                        mimeType: 'audio/webm'
+                    });
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        audioStream.getTracks().forEach(track => track.stop());
+
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const formData = new FormData();
+                        formData.append('file', audioBlob, 'recording.webm');
+
+                        try {
+                            responseArea.textContent = 'Processing audio...';
+                            const response = await fetch('https://00d5-34-145-59-18.ngrok-free.app/transcribe', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+
+                            const reader = response.body.getReader();
+                            const decoder = new TextDecoder();
+                            let transcriptionText = '';
+                            responseArea.innerHTML = '';
+
+                            while (true) {
+                                const {value, done} = await reader.read();
+                                if (done) break;
+                                
+                                const text = decoder.decode(value);
+                                const messages = text.split('\n');
+                                
+                                for (const message of messages) {
+                                    if (message.startsWith('data: ')) {
+                                        try {
+                                            const data = JSON.parse(message.slice(6));
+                                            
+                                            if (data.error) {
+                                                responseArea.textContent = `Error: ${data.error}`;
+                                                continue;
+                                            }
+
+                                            if (data.transcription) {
+                                                transcriptionText = data.transcription;
+                                            }
+
+                                            if (data.generated_word) {
+                                                responseArea.innerHTML += data.generated_word;
+                                            }
+                                            
+                                            if (data.status === 'complete') {
+                                                console.log('Transcription and response complete');
+                                            }
+                                        } catch (e) {
+                                            console.error('Error parsing message:', e);
+                                            responseArea.textContent = `Error: ${e.message}`;
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            responseArea.textContent = `Error: ${error.message}`;
+                        }
+
+                        micButton.querySelector('img').src = 'public/recording.svg';
+                        micButton.style.backgroundColor = '';
+                        isRecording = false;
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    micButton.querySelector('img').src = 'public/stop-recording.svg';
+                    micButton.style.backgroundColor = '#ff4444';
+                    responseArea.textContent = 'Recording... Click the mic button again to stop.';
+
+                } catch (error) {
+                    responseArea.textContent = `Microphone Access Error: ${error.message}`;
+                }
+            } else {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
